@@ -10,6 +10,8 @@ Langevin Dynamics Simulator
         :target: https://langevin-dynamics-simulator.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
+.. image:: https://coveralls.io/repos/github/oddguan/Langevin-Dynamics-Simulator/badge.svg?branch=master
+        :target: https://coveralls.io/github/oddguan/Langevin-Dynamics-Simulator?branch=master
 
 
 Overview
