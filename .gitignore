@@ -5,8 +5,10 @@ dist
 downloads
 .eggs
 parts
-src/*.egg-info
+*.egg-info
 lib
 lib64
 .vscode
 env
+.coverage
+tests/__pycache__
