@@ -3,9 +3,6 @@ Langevin Dynamics Simulator
 ===========================
 
 
-.. image:: https://img.shields.io/pypi/v/langevin_dynamics_simulator.svg
-        :target: https://pypi.python.org/pypi/langevin_dynamics_simulator
-
 .. image:: https://img.shields.io/travis/oddguan/langevin_dynamics_simulator.svg
         :target: https://travis-ci.org/oddguan/langevin_dynamics_simulator
 
@@ -14,13 +11,10 @@ Langevin Dynamics Simulator
         :alt: Documentation Status
 
 
-.. image:: https://pyup.io/repos/github/oddguan/langevin_dynamics_simulator/shield.svg
-     :target: https://pyup.io/repos/github/oddguan/langevin_dynamics_simulator/
-     :alt: Updates
 
-
-
-This is a simulatoof a particle
+Overview
+--------
+This is a Langevin Dynamics Simulator implemented in Python. 
 
 
 * Free software: MIT license

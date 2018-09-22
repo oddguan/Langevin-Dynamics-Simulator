@@ -16,7 +16,7 @@ def parse_args(args):
     parser = argparse.ArgumentParser()
     parser.add_argument('-x0', '--initial_position', type=float, \
     help='The initial position of the particle')
-    parser.add_argument('-v0', '--initial_velocity', \
+    parser.add_argument('-v0', '--initial_velocity', type=float, \
     help='The intial velocity of the particle')
     parser.add_argument('-temp', '--temperature', type=float, \
     help='The temperauture that the simulator runs at')
