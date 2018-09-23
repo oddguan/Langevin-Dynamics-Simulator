@@ -3,8 +3,8 @@ Langevin Dynamics Simulator
 ===========================
 
 
-.. image:: https://img.shields.io/travis/oddguan/langevin_dynamics_simulator.svg
-        :target: https://travis-ci.org/oddguan/langevin_dynamics_simulator
+.. image:: https://travis-ci.org/oddguan/Langevin-Dynamics-Simulator.svg?branch=master
+        :target: https://travis-ci.org/oddguan/Langevin-Dynamics-Simulator
 
 .. image:: https://readthedocs.org/projects/langevin-dynamics-simulator/badge/?version=latest
         :target: https://langevin-dynamics-simulator.readthedocs.io/en/latest/?badge=latest
@@ -16,7 +16,7 @@ Langevin Dynamics Simulator
 
 Overview
 --------
-This is a Langevin Dynamics Simulator implemented in Python. 
+This is a Langevin Dynamics Simulator implemented in Python.
 
 
 * Free software: MIT license
