@@ -13,3 +13,4 @@ env
 .coverage
 tests/__pycache__
 lds/__pycache__
+.pytest_cache/
