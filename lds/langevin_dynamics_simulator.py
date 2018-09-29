@@ -2,6 +2,7 @@
 
 """Main module."""
 
+import sys
 import argparse
 import numpy as np 
 
@@ -80,7 +81,7 @@ def euler_integrator(damping_coefficient, initial_velocity, total_time, time_ste
         time_list: a list of time steps.
     """
 
-    num_steps = total_time // time_step
+    num_steps = int(total_time // time_step)
     drag_force = -damping_coefficient * initial_velocity
     velocity_list = list()
     position_list = list()
@@ -97,6 +98,8 @@ def euler_integrator(damping_coefficient, initial_velocity, total_time, time_ste
             acceleration = drag_force + Xi
             new_velocity = velocity_list[-1]+acceleration*time_step 
             new_position = position_list[-1]+velocity_list[-1]*time_step
+            if new_position>wall or new_position<-wall:
+                break
             new_time = time_list[-1] + time_step
             velocity_list.append(new_velocity)
             position_list.append(new_position)
@@ -122,11 +125,21 @@ def hit_wall(position_list, wall):
         return True
     return False
 
-def main():
-    v, p, t = euler_integrator(10e-5, 1e-4, 10, 1, 20, 0, 5)
-    print(v)
-    print(p)
-    print(t)
 
+def main(sys_args):
+    args = parse_args(sys_args) # parsing arguments provided by user
+    velocity_list, position_list, time_list = \
+    euler_integrator(args['damping_coefficient'], \
+    args['initial_velocity'], \
+    args['total_time'], \
+    args['time_step'], \
+    args['temperature'], \
+    args['initial_position'], \
+    args['wall_size'])
+
+    print('The final position: ', position_list[-1])
+    print('The final velocity: ', velocity_list[-1])
+    return velocity_list, position_list, time_list
+    
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])

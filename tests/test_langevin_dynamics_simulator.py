@@ -4,6 +4,13 @@
 """Tests for `lds` package."""
 
 import unittest
+try:
+    # python 3.4+ should use builtin unittest.mock not mock package
+    import unittest.mock as mock
+except ImportError:
+    import mock
+
+import sys
 import numpy as np
 import scipy.stats as ss
 
@@ -53,6 +60,22 @@ class Test_Langevin_Dynamics_Simulator(unittest.TestCase):
             random_force = simulator.random_force(100, 1)
             force_list[i] = random_force
         self.assertGreater(ss.shapiro(force_list)[1], 0.05)
+    
+    def test_euler_integrator(self):
+        # checking when damping coefficient is 0
+        v, p, t = simulator.euler_integrator(0, 1e-4, 10, 1, 20, 0, 5)
+        # when damp_coeff is 0, v should not change based on time
+        for element in v:
+            self.assertEqual(1e-4, element)
+        
+        # checking time steps calculation
+        # if total time cannot be divided by the time step,
+        # time will stop before it reaches the ideal time 
+        v, p, t = simulator.euler_integrator(0, 1e-4, 11, 0.3, 20, 0, 5)
+        self.assertLess(t[-1], 11)
+
+        # position is not tested since random force distribution
+        # has been tested, and position shouldn't be a problem
 
     def test_hit_wall(self):
         position_list1 = [0, 1, 2, 3, 4, 5, 6]
@@ -62,6 +85,20 @@ class Test_Langevin_Dynamics_Simulator(unittest.TestCase):
         self.assertTrue(simulator.hit_wall(position_list1, wall))
         self.assertTrue(simulator.hit_wall(position_list2, wall))
         self.assertFalse(simulator.hit_wall(position_list3, wall))
+
+    def test_main(self):
+        testargs = ['prog', '-x0', '0', '-v0', \
+         '1e-4', '-temp', '30', '-dc', '10', '-ts', \
+          '1', '-tt', '30', '-ws', '5']
+        with mock.patch.object(sys, 'argv', testargs) as sys_args:
+            velocity_list, position_list, time_list = \
+            simulator.main(sys_args[1:])
+            self.assertIsInstance(velocity_list, list)
+            self.assertIsInstance(position_list, list)
+            self.assertIsInstance(time_list, list)
+            self.assertEqual(velocity_list[0], 1e-4)
+            self.assertEqual(position_list[0], 0)
+            self.assertEqual(time_list[0], 0.0)
 
 
 

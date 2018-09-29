@@ -1,5 +1,0 @@
-[
-  "tests/test_langevin_dynamics_simulator.py::Test_Langevin_Dynamics_Simulator::test_hit_wall",
-  "tests/test_langevin_dynamics_simulator.py::Test_Langevin_Dynamics_Simulator::test_parse_args",
-  "tests/test_langevin_dynamics_simulator.py::Test_Langevin_Dynamics_Simulator::test_random_force"
-]
