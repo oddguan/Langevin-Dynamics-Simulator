@@ -91,19 +91,16 @@ def euler_integrator(damping_coefficient, initial_velocity, total_time, time_ste
     time_list.append(0.0)
 
     for s in range(num_steps):
-        if hit_wall(position_list, wall):
+        Xi = random_force(temperature, damping_coefficient, kB, dirac_delta)
+        acceleration = drag_force + Xi
+        new_velocity = velocity_list[-1]+acceleration*time_step 
+        new_position = position_list[-1]+velocity_list[-1]*time_step
+        if new_position>wall or new_position<-wall:
             break
-        else:
-            Xi = random_force(temperature, damping_coefficient, kB, dirac_delta)
-            acceleration = drag_force + Xi
-            new_velocity = velocity_list[-1]+acceleration*time_step 
-            new_position = position_list[-1]+velocity_list[-1]*time_step
-            if new_position>wall or new_position<-wall:
-                break
-            new_time = time_list[-1] + time_step
-            velocity_list.append(new_velocity)
-            position_list.append(new_position)
-            time_list.append(new_time)
+        new_time = time_list[-1] + time_step
+        velocity_list.append(new_velocity)
+        position_list.append(new_position)
+        time_list.append(new_time)
 
     return velocity_list, position_list, time_list
 
@@ -140,6 +137,6 @@ def main(sys_args):
     print('The final position: ', position_list[-1])
     print('The final velocity: ', velocity_list[-1])
     return velocity_list, position_list, time_list
-    
+
 if __name__ == '__main__':
     main(sys.argv[1:])
