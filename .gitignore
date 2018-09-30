@@ -14,3 +14,4 @@ env
 tests/__pycache__
 lds/__pycache__
 .pytest_cache/
+.DS_Store
