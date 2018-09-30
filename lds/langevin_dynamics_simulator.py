@@ -3,6 +3,7 @@
 """Main module."""
 
 import sys
+import os
 import argparse
 import numpy as np 
 
@@ -34,7 +35,8 @@ def parse_args(args):
     help='The total time of the simulation process')
     parser.add_argument('-ws', '--wall_size', type=float, \
     help='The wall size of the simulation process')
-
+    parser.add_argument('-p', '--path', type=str, default='.', \
+    help='Path to save the output file and graph, default to current directory')
     return vars(parser.parse_args(args))
 
 
@@ -122,6 +124,13 @@ def hit_wall(position_list, wall):
         return True
     return False
 
+def output_file(velocity_list, position_list, time_list, file):
+    """
+    Output results from calculation to the given path. 
+    """
+    for i, t in enumerate(time_list):
+        file.write('{0} {1:.2f} {2:.6f} {3:.6f}\n'\
+        .format(i, t, position_list[i], velocity_list[i]))
 
 def main(sys_args):
     args = parse_args(sys_args) # parsing arguments provided by user
@@ -136,7 +145,10 @@ def main(sys_args):
 
     print('The final position: ', position_list[-1])
     print('The final velocity: ', velocity_list[-1])
+    
     return velocity_list, position_list, time_list
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    velocity_list, position_list, time_list = main(sys.argv[1:])
+    with open(os.path.join(args['path'], 'output'), 'w') as file:
+        output_file(velocity_list, position_list, time_list, file)

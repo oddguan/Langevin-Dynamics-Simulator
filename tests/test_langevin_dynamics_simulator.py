@@ -11,6 +11,7 @@ except ImportError:
     import mock
 
 import sys
+from io import StringIO
 import numpy as np
 import scipy.stats as ss
 
@@ -55,8 +56,8 @@ class Test_Langevin_Dynamics_Simulator(unittest.TestCase):
         
         # checking if 1000 generations follows a normal 
         # distribution by Shapiro-Wilk test
-        force_list = np.zeros(3000)
-        for i in range(3000):
+        force_list = np.zeros(5000)
+        for i in range(5000):
             random_force = simulator.random_force(100, 1)
             force_list[i] = random_force
         self.assertGreater(ss.shapiro(force_list)[1], 0.05)
@@ -85,6 +86,21 @@ class Test_Langevin_Dynamics_Simulator(unittest.TestCase):
         self.assertTrue(simulator.hit_wall(position_list1, wall))
         self.assertTrue(simulator.hit_wall(position_list2, wall))
         self.assertFalse(simulator.hit_wall(position_list3, wall))
+
+    def test_output_file(self):
+        outfile = StringIO()
+        simulator.output_file([7,8,9], [4,5,6], [1,2,3], outfile)
+        outfile.seek(0)
+        content = outfile.read()
+        output_list = content.split('\n')
+        for i, line in enumerate(output_list):
+            if i==0:
+                self.assertEqual(line, '{0} {1:.2f} {2:.6f} {3:.6f}'.format(i, 1, 4, 7))
+            elif i==1:
+                self.assertEqual(line, '{0} {1:.2f} {2:.6f} {3:.6f}'.format(i, 2, 5, 8))
+            elif i==2:
+                self.assertEqual(line, '{0} {1:.2f} {2:.6f} {3:.6f}'.format(i, 3, 6, 9))
+
 
     def test_main(self):
         testargs = ['prog', '-x0', '0', '-v0', \
