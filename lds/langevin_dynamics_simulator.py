@@ -127,12 +127,46 @@ def hit_wall(position_list, wall):
 def output_file(velocity_list, position_list, time_list, file):
     """
     Output results from calculation to the given path. 
+
+    Args:
+        velocity_list: a list contains the velocity at each time step.
+        position_list: a list contains the position at each time step.
+        time_list: a list contains each time step.
+        file: a file writer, either StringIO or opened file in 'w' mode.
     """
     for i, t in enumerate(time_list):
         file.write('{0} {1:.2f} {2:.6f} {3:.6f}\n'\
         .format(i, t, position_list[i], velocity_list[i]))
 
-def plot_figures():
+
+def plot_figures(wall_hitted, path, time_list, position_list):
+    """
+    Output the plot of the whole simulation.
+
+    Args:
+        wall_hitted: a numpy array that keeps track of how many times the 
+        particle hits the wall in 100 runs at what time step.
+        path: the path to save figures.
+        time_list: a list contains each time step.
+        position_list: a list contains the postion at each time step.
+    """
+    plt.figure(0)   
+    plt.hist(wall_hitted)
+    plt.xlabel('Time (s)')
+    plt.ylabel('# of time hit wall')
+    hist_path = os.path.join(path, 'histogram.png')
+    plt.savefig(hist_path)
+
+    plt.figure(1)
+    plt.plot(time_list, position_list, '.')
+    plt.xlabel('Time (s)')
+    plt.ylabel('position')
+    plt.ylim([-6, 6])
+    plt.axhline(5, color='r')
+    plt.axhline(-5, color='r')
+    traj_path = os.path.join(path, 'trajectory.png')
+    plt.savefig(traj_path)
+
 
 def main(args):
     velocity_list, position_list, time_list = \
@@ -147,6 +181,15 @@ def main(args):
     print('The final position: ', position_list[-1])
     print('The final velocity: ', velocity_list[-1])
     
+    print("Making a histogram by running 100 times the same simulation...")
+
+    wall_hitted = np.zeros(100)
+    for i in range(100):
+        v_list, p_list, t_list = \
+        euler_integrator(0.1, 0, 1000, 0.1, 300, 0, 5)
+        wall_hitted[i] = t_list[-1]
+    plot_figures(wall_hitted, args['path'], time_list, position_list)
+    print('histogram.png and trajectory.png saved')
     return velocity_list, position_list, time_list
 
 if __name__ == '__main__':
