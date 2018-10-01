@@ -6,7 +6,7 @@ import sys
 import os
 import argparse
 import numpy as np 
-
+import matplotlib.pyplot as plt
 
 def parse_args(args):
     """
@@ -132,8 +132,9 @@ def output_file(velocity_list, position_list, time_list, file):
         file.write('{0} {1:.2f} {2:.6f} {3:.6f}\n'\
         .format(i, t, position_list[i], velocity_list[i]))
 
-def main(sys_args):
-    args = parse_args(sys_args) # parsing arguments provided by user
+def plot_figures():
+
+def main(args):
     velocity_list, position_list, time_list = \
     euler_integrator(args['damping_coefficient'], \
     args['initial_velocity'], \
@@ -149,6 +150,7 @@ def main(sys_args):
     return velocity_list, position_list, time_list
 
 if __name__ == '__main__':
-    velocity_list, position_list, time_list = main(sys.argv[1:])
+    args = parse_args(sys.argv[1:])
+    velocity_list, position_list, time_list = main(args)
     with open(os.path.join(args['path'], 'output'), 'w') as file:
         output_file(velocity_list, position_list, time_list, file)

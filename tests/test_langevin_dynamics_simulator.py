@@ -107,8 +107,9 @@ class Test_Langevin_Dynamics_Simulator(unittest.TestCase):
          '1e-4', '-temp', '30', '-dc', '10', '-ts', \
           '1', '-tt', '30', '-ws', '5']
         with mock.patch.object(sys, 'argv', testargs) as sys_args:
+            args = simulator.parse_args(sys_args[1:])
             velocity_list, position_list, time_list = \
-            simulator.main(sys_args[1:])
+            simulator.main(args)
             self.assertIsInstance(velocity_list, list)
             self.assertIsInstance(position_list, list)
             self.assertIsInstance(time_list, list)
