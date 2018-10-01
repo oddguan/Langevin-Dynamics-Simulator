@@ -154,14 +154,14 @@ def plot_figures(wall_hitted, path, time_list, position_list):
         hist_path: the path saved for the histogram.
         traj_path: the path saved for the trajectory.
     """
-    plt.figure(0)   
+    plt.figure()   
     plt.hist(wall_hitted)
     plt.xlabel('Time (s)')
     plt.ylabel('# of time hit wall')
     hist_path = os.path.join(path, 'histogram.png')
     plt.savefig(hist_path)
 
-    plt.figure(1)
+    plt.figure()
     plt.plot(time_list, position_list, '.')
     plt.xlabel('Time (s)')
     plt.ylabel('position')
