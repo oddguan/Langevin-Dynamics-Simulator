@@ -149,6 +149,10 @@ def plot_figures(wall_hitted, path, time_list, position_list):
         path: the path to save figures.
         time_list: a list contains each time step.
         position_list: a list contains the postion at each time step.
+    
+    Returns:
+        hist_path: the path saved for the histogram.
+        traj_path: the path saved for the trajectory.
     """
     plt.figure(0)   
     plt.hist(wall_hitted)
@@ -166,6 +170,7 @@ def plot_figures(wall_hitted, path, time_list, position_list):
     plt.axhline(-5, color='r')
     traj_path = os.path.join(path, 'trajectory.png')
     plt.savefig(traj_path)
+    return hist_path, traj_path
 
 
 def main(args):

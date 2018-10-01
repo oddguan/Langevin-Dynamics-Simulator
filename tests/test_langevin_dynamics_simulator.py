@@ -34,7 +34,8 @@ class Test_Langevin_Dynamics_Simulator(unittest.TestCase):
                 '-dc', '10e-5', \
                 '-ts', '0.1', \
                 '-tt', '20' , \
-                '-ws', '5'
+                '-ws', '5', \
+                '-p', '.'
             ]
         )
 
@@ -46,6 +47,7 @@ class Test_Langevin_Dynamics_Simulator(unittest.TestCase):
         self.assertEqual(parse['time_step'], 0.1)
         self.assertEqual(parse['total_time'], 20)
         self.assertEqual(parse['wall_size'], 5)
+        self.assertEqual(parse['path'], '.')
     
     def test_random_force(self):
         # checking if it always generate 0, if both mu and 
@@ -101,6 +103,14 @@ class Test_Langevin_Dynamics_Simulator(unittest.TestCase):
             elif i==2:
                 self.assertEqual(line, '{0} {1:.2f} {2:.6f} {3:.6f}'.format(i, 3, 6, 9))
 
+    def test_plot_figures(self):
+        wall_hitted = np.zeros(100)
+        path = '.'
+        time_list = np.zeros(200)
+        position_list = np.zeros(200)
+        hist_path, traj_path = simulator.plot_figures(wall_hitted, path, time_list, position_list)
+        self.assertEqual(hist_path.split('/')[-1], 'histogram.png')
+        self.assertEqual(traj_path.split('/')[-1], 'trajectory.png')
 
     def test_main(self):
         testargs = ['prog', '-x0', '0', '-v0', \
