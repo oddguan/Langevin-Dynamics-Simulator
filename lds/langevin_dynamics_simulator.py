@@ -24,19 +24,19 @@ def parse_args(args):
     """
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-x0', '--initial_position', type=float, \
+    parser.add_argument('-x0', '--initial_position', type=float, required=True\
     help='The initial position of the particle')
-    parser.add_argument('-v0', '--initial_velocity', type=float, \
+    parser.add_argument('-v0', '--initial_velocity', type=float, required=True\
     help='The intial velocity of the particle')
-    parser.add_argument('-temp', '--temperature', type=float, \
+    parser.add_argument('-temp', '--temperature', type=float, required=True\
     help='The temperauture that the simulator runs at')
-    parser.add_argument('-dc', '--damping_coefficient', type=float, \
+    parser.add_argument('-dc', '--damping_coefficient', type=float, required=True\
     help='The damping coefficient of the system')
-    parser.add_argument('-ts', '--time_step', type=float, \
+    parser.add_argument('-ts', '--time_step', type=float, required=True\
     help='Time step of the simulation process')
-    parser.add_argument('-tt', '--total_time', type=float, \
+    parser.add_argument('-tt', '--total_time', type=float, required=True\
     help='The total time of the simulation process')
-    parser.add_argument('-ws', '--wall_size', type=float, \
+    parser.add_argument('-ws', '--wall_size', type=float, required=True\
     help='The wall size of the simulation process')
     parser.add_argument('-p', '--path', type=str, default='.', \
     help='Path to save the output file and graph, default to current directory')
