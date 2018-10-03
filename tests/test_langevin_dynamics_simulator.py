@@ -38,7 +38,8 @@ class Test_Langevin_Dynamics_Simulator(unittest.TestCase):
                 '-p', '.'
             ]
         )
-
+        
+        # assert each key in dict corresponds to the correct value
         self.assertIsInstance(parse, dict)
         self.assertEqual(parse['initial_position'], 5)
         self.assertEqual(parse['initial_velocity'], 10)
@@ -96,11 +97,11 @@ class Test_Langevin_Dynamics_Simulator(unittest.TestCase):
         content = outfile.read()
         output_list = content.split('\n')
         for i, line in enumerate(output_list):
-            if i==0:
+            if i==0: # check the first set of output
                 self.assertEqual(line, '{0} {1:.2f} {2:.6f} {3:.6f}'.format(i, 1, 4, 7))
-            elif i==1:
+            elif i==1: # second set
                 self.assertEqual(line, '{0} {1:.2f} {2:.6f} {3:.6f}'.format(i, 2, 5, 8))
-            elif i==2:
+            elif i==2: # third set
                 self.assertEqual(line, '{0} {1:.2f} {2:.6f} {3:.6f}'.format(i, 3, 6, 9))
 
     def test_plot_figures(self):

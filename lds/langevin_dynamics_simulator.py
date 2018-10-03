@@ -7,7 +7,7 @@ import os
 import argparse
 import numpy as np 
 import matplotlib
-matplotlib.use('Agg')
+matplotlib.use('Agg') # For python 3.4, choose backend before use
 import matplotlib.pyplot as plt
 
 
@@ -24,19 +24,19 @@ def parse_args(args):
     """
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-x0', '--initial_position', type=float, required=True\
+    parser.add_argument('-x0', '--initial_position', type=float, required=True,\
     help='The initial position of the particle')
-    parser.add_argument('-v0', '--initial_velocity', type=float, required=True\
+    parser.add_argument('-v0', '--initial_velocity', type=float, required=True,\
     help='The intial velocity of the particle')
-    parser.add_argument('-temp', '--temperature', type=float, required=True\
+    parser.add_argument('-temp', '--temperature', type=float, required=True,\
     help='The temperauture that the simulator runs at')
-    parser.add_argument('-dc', '--damping_coefficient', type=float, required=True\
+    parser.add_argument('-dc', '--damping_coefficient', type=float, required=True,\
     help='The damping coefficient of the system')
-    parser.add_argument('-ts', '--time_step', type=float, required=True\
+    parser.add_argument('-ts', '--time_step', type=float, required=True,\
     help='Time step of the simulation process')
-    parser.add_argument('-tt', '--total_time', type=float, required=True\
+    parser.add_argument('-tt', '--total_time', type=float, required=True,\
     help='The total time of the simulation process')
-    parser.add_argument('-ws', '--wall_size', type=float, required=True\
+    parser.add_argument('-ws', '--wall_size', type=float, required=True,\
     help='The wall size of the simulation process')
     parser.add_argument('-p', '--path', type=str, default='.', \
     help='Path to save the output file and graph, default to current directory')
@@ -86,27 +86,35 @@ def euler_integrator(damping_coefficient, initial_velocity, total_time, time_ste
         time_list: a list of time steps.
     """
 
-    num_steps = int(total_time // time_step)
-    drag_force = -damping_coefficient * initial_velocity
+    num_steps = int(total_time // time_step) # calculate the number of steps
+    drag_force = -damping_coefficient * initial_velocity # drag force calculation
+    # Initialize three lists to keep track of all data
     velocity_list = list()
     position_list = list()
     time_list = list()
+    # append initial conditions
     velocity_list.append(initial_velocity)
     position_list.append(initial_position)
     time_list.append(0.0)
 
-    for s in range(num_steps):
+    for s in range(num_steps): # for every step, do:
+        # calculate the random force in equation
         Xi = random_force(temperature, damping_coefficient, kB, dirac_delta)
         acceleration = drag_force + Xi
         new_velocity = velocity_list[-1]+acceleration*time_step 
         new_position = position_list[-1]+velocity_list[-1]*time_step
-        if new_position>wall or new_position<-wall:
-            break
         new_time = time_list[-1] + time_step
         velocity_list.append(new_velocity)
-        position_list.append(new_position)
         time_list.append(new_time)
-
+        if new_position > wall: # if hit wall at wall_size
+            position_list.append(wall)
+            break
+        elif new_position < 0: # if hit wall at 0
+            position_list.append(0)
+            break
+        else: # if not hitting the wall
+            position_list.append(new_position)
+        
     return velocity_list, position_list, time_list
 
 
@@ -127,6 +135,7 @@ def hit_wall(position_list, wall):
         return True
     return False
 
+
 def output_file(velocity_list, position_list, time_list, file):
     """
     Output results from calculation to the given path. 
@@ -138,6 +147,7 @@ def output_file(velocity_list, position_list, time_list, file):
         file: a file writer, either StringIO or opened file in 'w' mode.
     """
     for i, t in enumerate(time_list):
+        # write output file with specific precisions.
         file.write('{0} {1:.2f} {2:.6f} {3:.6f}\n'\
         .format(i, t, position_list[i], velocity_list[i]))
 
@@ -157,26 +167,32 @@ def plot_figures(wall_hitted, path, time_list, position_list):
         hist_path: the path saved for the histogram.
         traj_path: the path saved for the trajectory.
     """
+    # first figure, histogram
     plt.figure()   
     plt.hist(wall_hitted)
+    # label x and y axis
     plt.xlabel('Time (s)')
     plt.ylabel('# of time hit wall')
     hist_path = os.path.join(path, 'histogram.png')
     plt.savefig(hist_path)
 
+    # second figure, trajectory
     plt.figure()
     plt.plot(time_list, position_list, '.')
     plt.xlabel('Time (s)')
     plt.ylabel('position')
-    plt.ylim([-6, 6])
+    # set the y limits
+    plt.ylim([-1, 6])
+    # plot the walls in red
     plt.axhline(5, color='r')
-    plt.axhline(-5, color='r')
+    plt.axhline(-0, color='r')
     traj_path = os.path.join(path, 'trajectory.png')
     plt.savefig(traj_path)
     return hist_path, traj_path
 
 
 def main(args):
+    # get velocity, position and time steps from integrator
     velocity_list, position_list, time_list = \
     euler_integrator(args['damping_coefficient'], \
     args['initial_velocity'], \
@@ -192,6 +208,7 @@ def main(args):
     print("Making a histogram by running 100 times the same simulation...")
 
     wall_hitted = np.zeros(100)
+    # run 100 times with the same input to generate the histogram
     for i in range(100):
         v_list, p_list, t_list = \
         euler_integrator(0.1, 0, 1000, 0.1, 300, 0, 5)
