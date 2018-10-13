@@ -38,7 +38,6 @@ class Test_Langevin_Dynamics_Simulator(unittest.TestCase):
                 '-p', '.'
             ]
         )
-        
         # assert each key in dict corresponds to the correct value
         self.assertIsInstance(parse, dict)
         self.assertEqual(parse['initial_position'], 5)
