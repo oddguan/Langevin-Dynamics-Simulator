@@ -16,7 +16,7 @@ Langevin Dynamics Simulator
 
 Overview
 --------
-This is a 1-D Langevin Dynamics Simulator implemented in Python. This simulator caculates the final position and velocity of a given 
+This is a 1-D Langevin Dynamics Simulator implemented in Python. This simulator calculates the final position and velocity of a given 
 particle, by providing the initial position and velocity, damping coefficient, total time and the time step of integration.
 
 This simulator uses the Euler Integrator. 

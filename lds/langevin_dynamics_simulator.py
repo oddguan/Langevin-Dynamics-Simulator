@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-
 """Main module."""
 
 import sys
 import os
+
 import argparse
 import numpy as np 
 import matplotlib
